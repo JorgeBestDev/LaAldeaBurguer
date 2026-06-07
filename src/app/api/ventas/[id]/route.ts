@@ -8,6 +8,14 @@ type RouteContext = {
 export async function GET(_request: NextRequest, context: RouteContext) {
   try {
     const { id } = await context.params;
+
+    if (!/^\d+$/.test(id)) {
+      return NextResponse.json(
+        { error: "Identificador de venta inválido." },
+        { status: 400 },
+      );
+    }
+
     const venta = await obtenerVentaPorId(BigInt(id));
 
     if (!venta) {

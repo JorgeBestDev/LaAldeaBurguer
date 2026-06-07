@@ -15,8 +15,8 @@ Too many connections exhaust memory and degrade performance. Set limits based on
 -- Default max_connections = 100, but often increased blindly
 show max_connections;  -- 500 (way too high for 4GB RAM)
 
--- Each connection uses 1-3MB RAM
--- 500 connections * 2MB = 1GB just for connections!
+-- Each connection uses ~5MB RAM (conservative estimate for peak usage and overhead)
+-- 500 connections * 5MB = 2.5GB just for connections!
 -- Out of memory errors under load
 ```
 

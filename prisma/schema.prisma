@@ -1,10 +1,10 @@
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
 }
 
 model Producto {
@@ -34,7 +34,7 @@ model DetalleVenta {
   precioUnitario   BigInt   @map("precioUnitario")
   subtotalVenta    BigInt   @map("subtotalVenta")
   venta            Venta    @relation(fields: [idVenta], references: [idVenta], onDelete: Cascade)
-  producto         Producto @relation(fields: [idProducto], references: [idProducto])
+  producto         Producto @relation(fields: [idProducto], references: [idProducto], onDelete: Restrict)
 
   @@map("detalleVenta")
 }

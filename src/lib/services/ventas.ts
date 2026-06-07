@@ -2,6 +2,13 @@ import { prisma } from "@/lib/prisma";
 import { serializeBigInt } from "@/lib/serializers";
 import type { CrearVentaInput, Venta } from "@/types";
 
+export class ClientError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ClientError";
+  }
+}
+
 export async function listarVentas(): Promise<Venta[]> {
   const ventas = await prisma.venta.findMany({
     orderBy: { fechaVenta: "desc" },
@@ -31,16 +38,19 @@ export async function obtenerVentaPorId(idVenta: bigint): Promise<Venta | null> 
 
 export async function crearVenta(input: CrearVentaInput): Promise<Venta> {
   if (!input.lineas.length) {
-    throw new Error("Debes agregar al menos un producto a la venta.");
+    throw new ClientError("Debes agregar al menos un producto a la venta.");
   }
 
-  const productoIds = input.lineas.map((linea) => BigInt(linea.idProducto));
+  const uniqueProductoIds = [
+    ...new Set(input.lineas.map((linea) => linea.idProducto)),
+  ];
+  const productoIds = uniqueProductoIds.map((id) => BigInt(id));
   const productos = await prisma.producto.findMany({
     where: { idProducto: { in: productoIds } },
   });
 
-  if (productos.length !== input.lineas.length) {
-    throw new Error("Uno o más productos no existen.");
+  if (productos.length !== uniqueProductoIds.length) {
+    throw new ClientError("Uno o más productos no existen.");
   }
 
   const productoMap = new Map(
@@ -50,7 +60,7 @@ export async function crearVenta(input: CrearVentaInput): Promise<Venta> {
   const detalles = input.lineas.map((linea) => {
     const producto = productoMap.get(linea.idProducto);
     if (!producto) {
-      throw new Error(`Producto ${linea.idProducto} no encontrado.`);
+      throw new ClientError(`Producto ${linea.idProducto} no encontrado.`);
     }
 
     const cantidad = BigInt(linea.cantidadProducto);

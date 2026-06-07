@@ -137,7 +137,10 @@ export function NuevaVentaForm({ productos }: NuevaVentaFormProps) {
                 type="number"
                 min={1}
                 value={cantidad}
-                onChange={(event) => setCantidad(Number(event.target.value))}
+                onChange={(event) => {
+                  const parsed = Number(event.target.value);
+                  setCantidad(Number.isNaN(parsed) ? 0 : parsed);
+                }}
                 className="rounded-2xl border border-amber-500/20 bg-[#1a1208] px-4 py-3 text-amber-50 outline-none transition focus:border-amber-400"
               />
             </label>

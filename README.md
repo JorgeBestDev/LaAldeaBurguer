@@ -99,7 +99,7 @@ Abre [http://localhost:3000](http://localhost:3000).
 5. Ejecuta migraciones/seed contra la base en producción:
 
 ```bash
-npm run db:push
+npm run db:migrate:deploy
 npm run db:seed
 ```
 
@@ -112,5 +112,5 @@ npm run db:seed
 | GET | `/api/productos` | Lista de productos |
 | GET | `/api/ventas` | Lista de ventas |
 | POST | `/api/ventas` | Registrar venta |
-| GET | `/api/ventas/:id` | Detalle de venta |
+| GET | `/api/ventas/[id]` | Detalle de venta |
 | GET | `/api/estadisticas` | Estadísticas del dashboard |

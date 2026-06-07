@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { crearVenta, listarVentas } from "@/lib/services/ventas";
+import { crearVenta, listarVentas, ClientError } from "@/lib/services/ventas";
 import type { CrearVentaInput } from "@/types";
 
 export async function GET() {
@@ -32,6 +32,11 @@ export async function POST(request: NextRequest) {
     const message =
       error instanceof Error ? error.message : "No se pudo registrar la venta.";
 
-    return NextResponse.json({ error: message }, { status: 400 });
+    const status = error instanceof ClientError ? 400 : 500;
+    if (status === 500) {
+      console.error("Error al registrar venta:", error);
+    }
+
+    return NextResponse.json({ error: message }, { status });
   }
 }

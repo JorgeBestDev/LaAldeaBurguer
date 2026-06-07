@@ -14,6 +14,10 @@ type VentaPageProps = {
 export default async function VentaPage({ params }: VentaPageProps) {
   const { id } = await params;
 
+  if (!/^\d+$/.test(id)) {
+    notFound();
+  }
+
   let venta: Venta | null = null;
 
   try {

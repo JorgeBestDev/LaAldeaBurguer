@@ -52,3 +52,15 @@ export interface CrearVentaInput {
   fechaVenta: string;
   lineas: LineaVentaInput[];
 }
+
+export interface CrearProductoInput {
+  nombreProducto: string;
+  precioProducto: number;
+  tipoProducto: string;
+}
+
+export interface ActualizarProductoInput {
+  nombreProducto?: string;
+  precioProducto?: number;
+  tipoProducto?: string;
+}

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { crearVenta, listarVentas, ClientError } from "@/lib/services/ventas";
+import { ClientError } from "@/lib/errors";
+import { crearVenta, listarVentas } from "@/lib/services/ventas";
 import type { CrearVentaInput } from "@/types";
 
 export async function GET() {

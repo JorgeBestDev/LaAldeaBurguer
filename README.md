@@ -92,6 +92,10 @@ Abre [http://localhost:3000](http://localhost:3000).
 - Información del ticket
 - Listado de productos vendidos con precios y subtotales
 
+### Productos (`/productos`)
+- Listado del catálogo
+- Agregar, editar y eliminar productos
+
 ## Despliegue en Vercel
 
 1. Sube el repositorio a GitHub.
@@ -112,6 +116,10 @@ npm run db:seed
 | Método | Ruta | Descripción |
 |--------|------|-------------|
 | GET | `/api/productos` | Lista de productos |
+| POST | `/api/productos` | Crear producto |
+| GET | `/api/productos/[id]` | Detalle de producto |
+| PUT | `/api/productos/[id]` | Actualizar producto |
+| DELETE | `/api/productos/[id]` | Eliminar producto |
 | GET | `/api/ventas` | Lista de ventas |
 | POST | `/api/ventas` | Registrar venta |
 | GET | `/api/ventas/[id]` | Detalle de venta |

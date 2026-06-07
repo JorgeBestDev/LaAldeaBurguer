@@ -1,13 +1,7 @@
+import { ClientError } from "@/lib/errors";
 import { getPrisma } from "@/lib/prisma";
 import { serializeBigInt } from "@/lib/serializers";
 import type { CrearVentaInput, Venta } from "@/types";
-
-export class ClientError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "ClientError";
-  }
-}
 
 export async function listarVentas(): Promise<Venta[]> {
   const prisma = getPrisma();

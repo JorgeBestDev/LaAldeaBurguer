@@ -170,7 +170,7 @@ export function ProductosAdmin({ productosIniciales }: ProductosAdminProps) {
           </label>
 
           <label className="grid gap-2">
-            <span className="text-sm font-medium text-amber-100">Precio (MXN)</span>
+            <span className="text-sm font-medium text-amber-100">Precio (COP)</span>
             <input
               type="number"
               min={1}

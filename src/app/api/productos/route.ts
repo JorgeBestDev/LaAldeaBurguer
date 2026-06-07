@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { serializeBigInt } from "@/lib/serializers";
 
 export async function GET() {
   try {
+    const prisma = getPrisma();
     const productos = await prisma.producto.findMany({
       orderBy: { nombreProducto: "asc" },
     });

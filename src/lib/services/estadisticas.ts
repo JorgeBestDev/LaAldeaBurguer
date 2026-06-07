@@ -1,9 +1,10 @@
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { DIAS_SEMANA } from "@/lib/format";
 import { serializeBigInt } from "@/lib/serializers";
 import type { Estadisticas } from "@/types";
 
 export async function obtenerEstadisticas(): Promise<Estadisticas> {
+  const prisma = getPrisma();
   const [agrupadoProductos, ventaMasAlta, ventasPorDia, resumenVentas] =
     await Promise.all([
       prisma.detalleVenta.groupBy({

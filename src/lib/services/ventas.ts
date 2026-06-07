@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { serializeBigInt } from "@/lib/serializers";
 import type { CrearVentaInput, Venta } from "@/types";
 
@@ -10,6 +10,7 @@ export class ClientError extends Error {
 }
 
 export async function listarVentas(): Promise<Venta[]> {
+  const prisma = getPrisma();
   const ventas = await prisma.venta.findMany({
     orderBy: { fechaVenta: "desc" },
     include: {
@@ -23,6 +24,7 @@ export async function listarVentas(): Promise<Venta[]> {
 }
 
 export async function obtenerVentaPorId(idVenta: bigint): Promise<Venta | null> {
+  const prisma = getPrisma();
   const venta = await prisma.venta.findUnique({
     where: { idVenta },
     include: {
@@ -37,6 +39,8 @@ export async function obtenerVentaPorId(idVenta: bigint): Promise<Venta | null> 
 }
 
 export async function crearVenta(input: CrearVentaInput): Promise<Venta> {
+  const prisma = getPrisma();
+
   if (!input.lineas.length) {
     throw new ClientError("Debes agregar al menos un producto a la venta.");
   }

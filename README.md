@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# La Aldea Burguer — Registro de ventas
 
-## Getting Started
+Sistema web para registrar ventas diarias de un restaurante local, consultar el detalle de cada ticket y visualizar estadísticas en un dashboard responsive (móvil y escritorio).
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router) + TypeScript
+- **PostgreSQL** con **Prisma ORM**
+- **Tailwind CSS**
+- Despliegue recomendado en **Vercel**
+
+## Modelo de datos
+
+El esquema replica el diagrama entregado:
+
+| Tabla | Campos principales |
+|-------|-------------------|
+| `productos` | idProducto, nombreProducto, precioProducto, tipoProducto |
+| `venta` | idVenta, fechaVenta, totalVenta |
+| `detalleVenta` | idDetalle, idVenta, idProducto, cantidadProducto, precioUnitario, subtotalVenta |
+
+## Arquitectura
+
+```
+src/
+├── app/
+│   ├── page.tsx                 # Dashboard
+│   ├── ventas/nueva/page.tsx    # Registrar venta
+│   ├── ventas/[id]/page.tsx     # Detalle de venta
+│   └── api/                     # REST API
+├── components/                  # UI reutilizable
+├── lib/
+│   ├── prisma.ts                # Cliente de base de datos
+│   └── services/                # Lógica de negocio
+└── types/                       # Tipos compartidos
+```
+
+## Requisitos previos
+
+- Node.js 20+
+- Base de datos PostgreSQL (local, [Neon](https://neon.tech), [Supabase](https://supabase.com) o Vercel Postgres)
+
+## Configuración local
+
+1. Instala dependencias:
+
+```bash
+npm install
+```
+
+2. Copia las variables de entorno:
+
+```bash
+cp .env.example .env
+```
+
+3. Configura `DATABASE_URL` en `.env` con tu cadena de conexión PostgreSQL.
+
+4. Crea las tablas y carga datos de ejemplo:
+
+```bash
+npm run db:push
+npm run db:seed
+```
+
+5. Inicia el servidor de desarrollo:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Funcionalidades
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Dashboard (`/`)
+- Producto más vendido
+- Venta más alta registrada
+- Ingreso total acumulado
+- Gráfica de ventas por día de la semana
+- Tabla de ventas recientes con acceso al detalle
 
-## Learn More
+### Nueva venta (`/ventas/nueva`)
+- Selección de fecha
+- Producto y cantidad
+- Varias líneas por ticket
+- Cálculo automático de subtotales y total
 
-To learn more about Next.js, take a look at the following resources:
+### Detalle de venta (`/ventas/[id]`)
+- Información del ticket
+- Listado de productos vendidos con precios y subtotales
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Despliegue en Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Sube el repositorio a GitHub.
+2. Importa el proyecto en [Vercel](https://vercel.com).
+3. Crea una base PostgreSQL (Neon o Vercel Postgres).
+4. Agrega la variable de entorno `DATABASE_URL` en Vercel.
+5. Ejecuta migraciones/seed contra la base en producción:
 
-## Deploy on Vercel
+```bash
+npm run db:push
+npm run db:seed
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+6. Despliega. El script `postinstall` generará el cliente Prisma automáticamente.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## API disponible
+
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/productos` | Lista de productos |
+| GET | `/api/ventas` | Lista de ventas |
+| POST | `/api/ventas` | Registrar venta |
+| GET | `/api/ventas/:id` | Detalle de venta |
+| GET | `/api/estadisticas` | Estadísticas del dashboard |

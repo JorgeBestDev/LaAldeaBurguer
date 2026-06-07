@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Producto {
+  idProducto     BigInt         @id @default(autoincrement()) @map("idProducto")
+  nombreProducto String         @map("nombreProducto") @db.VarChar(255)
+  precioProducto BigInt         @map("precioProducto")
+  tipoProducto   String         @map("tipoProducto") @db.VarChar(100)
+  detalles       DetalleVenta[]
+
+  @@map("productos")
+}
+
+model Venta {
+  idVenta    BigInt         @id @default(autoincrement()) @map("idVenta")
+  fechaVenta DateTime       @map("fechaVenta") @db.Date
+  totalVenta BigInt         @map("totalVenta")
+  detalles   DetalleVenta[]
+
+  @@map("venta")
+}
+
+model DetalleVenta {
+  idDetalle        BigInt   @id @default(autoincrement()) @map("idDetalle")
+  idVenta          BigInt   @map("idVenta")
+  idProducto       BigInt   @map("idProducto")
+  cantidadProducto BigInt   @map("cantidadProducto")
+  precioUnitario   BigInt   @map("precioUnitario")
+  subtotalVenta    BigInt   @map("subtotalVenta")
+  venta            Venta    @relation(fields: [idVenta], references: [idVenta], onDelete: Cascade)
+  producto         Producto @relation(fields: [idProducto], references: [idProducto])
+
+  @@map("detalleVenta")
+}

@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { NuevaVentaForm } from "@/components/NuevaVentaForm";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { serializeBigInt } from "@/lib/serializers";
 import type { Producto } from "@/types";
 
@@ -12,6 +12,7 @@ export default async function NuevaVentaPage() {
   let error = "";
 
   try {
+    const prisma = getPrisma();
     const data = await prisma.producto.findMany({
       orderBy: { nombreProducto: "asc" },
     });

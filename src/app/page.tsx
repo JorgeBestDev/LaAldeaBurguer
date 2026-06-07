@@ -23,7 +23,7 @@ export default async function DashboardPage() {
   } catch (fetchError) {
     console.error(fetchError);
     error =
-      "No se pudo conectar con la base de datos. Configura DATABASE_URL y ejecuta las migraciones.";
+      "No se pudo conectar con Neon. Configura DATABASE_URL y DIRECT_URL, luego ejecuta las migraciones.";
   }
 
   return (

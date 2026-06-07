@@ -1,4 +1,4 @@
-import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaNeon } from "@prisma/adapter-neon";
 import { PrismaClient } from "@/generated/prisma/client";
 
 const globalForPrisma = globalThis as unknown as {
@@ -12,7 +12,7 @@ function createPrismaClient() {
     throw new Error("DATABASE_URL no está configurada.");
   }
 
-  const adapter = new PrismaPg({ connectionString });
+  const adapter = new PrismaNeon({ connectionString });
 
   return new PrismaClient({
     adapter,
@@ -24,4 +24,4 @@ export const prisma = globalForPrisma.prisma ?? createPrismaClient();
 
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
-} 
+}

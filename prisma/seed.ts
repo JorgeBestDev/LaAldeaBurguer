@@ -1,11 +1,14 @@
 import "dotenv/config";
-import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaNeon } from "@prisma/adapter-neon";
 import { PrismaClient } from "../src/generated/prisma/client";
 
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
-});
+const connectionString = process.env.DIRECT_URL ?? process.env.DATABASE_URL;
 
+if (!connectionString) {
+  throw new Error("Configura DIRECT_URL o DATABASE_URL en .env.");
+}
+
+const adapter = new PrismaNeon({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
 const productos = [

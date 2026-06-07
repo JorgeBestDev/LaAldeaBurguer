@@ -5,7 +5,7 @@ Sistema web para registrar ventas diarias de un restaurante local, consultar el 
 ## Stack
 
 - **Next.js 16** (App Router) + TypeScript
-- **PostgreSQL** con **Prisma ORM**
+- **Neon** (PostgreSQL serverless) con **Prisma ORM**
 - **Tailwind CSS**
 - Despliegue recomendado en **Vercel**
 
@@ -38,7 +38,7 @@ src/
 ## Requisitos previos
 
 - Node.js 20+
-- Base de datos PostgreSQL (local, [Neon](https://neon.tech), [Supabase](https://supabase.com) o Vercel Postgres)
+- Cuenta en [Neon](https://neon.tech) con un proyecto creado
 
 ## Configuración local
 
@@ -54,7 +54,9 @@ npm install
 cp .env.example .env
 ```
 
-3. Configura `DATABASE_URL` en `.env` con tu cadena de conexión PostgreSQL.
+3. En el [Neon Console](https://console.neon.tech), abre **Connect** y copia las dos cadenas de conexión en `.env`:
+   - `DATABASE_URL` — pooled (host con `-pooler`) para la app en runtime
+   - `DIRECT_URL` — directa para migraciones y seed
 
 4. Crea las tablas y carga datos de ejemplo:
 
@@ -94,8 +96,8 @@ Abre [http://localhost:3000](http://localhost:3000).
 
 1. Sube el repositorio a GitHub.
 2. Importa el proyecto en [Vercel](https://vercel.com).
-3. Crea una base PostgreSQL (Neon o Vercel Postgres).
-4. Agrega la variable de entorno `DATABASE_URL` en Vercel.
+3. Crea un proyecto en [Neon](https://neon.tech) (o conéctalo desde el marketplace de Vercel).
+4. Agrega `DATABASE_URL` (pooled) y `DIRECT_URL` (directa) como variables de entorno en Vercel.
 5. Ejecuta migraciones/seed contra la base en producción:
 
 ```bash
